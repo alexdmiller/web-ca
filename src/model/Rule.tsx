@@ -24,6 +24,10 @@ export class Rule {
         }
       }
     }
+
+    if (this.targetX == undefined) {
+      throw "Target place holder identifier '" + Rule.targetIdentifier + "' not found in pattern";
+    }
   }
 
   public getTarget(): string {
@@ -66,6 +70,9 @@ export class Rule {
             (y == this.targetY) &&
             (this.pattern.getCell(x, y) == Rule.targetIdentifier) &&
             (block.getCell(x, y) == this.target);
+
+        // TODO: take wildcards into account
+
         if (!matchesExactly && !matchesTarget) {
           return false;
         }

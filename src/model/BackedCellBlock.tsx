@@ -4,22 +4,23 @@ import {Coordinate} from './Coordinate';
 export default class BackedCellBlock implements CellBlock {
   private backingBlock: CellBlock;
   private topLeft: Coordinate;
-  private bottomRight: Coordinate;
+  private width: number;
+  private height: number;
 
-  public constructor(backingBlock: CellBlock, topLeft: Coordinate, bottomRight: Coordinate) {
+  public constructor(backingBlock: CellBlock, topLeft: Coordinate, width: number, height: number) {
     // TODO: ensure valid bounds
-
     this.backingBlock = backingBlock;
     this.topLeft = topLeft;
-    this.bottomRight = bottomRight;
+    this.width = width;
+    this.height = height;
   }
 
   getWidth():number {
-    return this.bottomRight.x - this.topLeft.x;
+    return this.width;
   }
 
   getHeight():number {
-    return this.bottomRight.y - this.topLeft.y;
+    return this.height
   }
 
   getCell(x:number, y:number):string {

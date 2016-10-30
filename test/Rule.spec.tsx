@@ -3,7 +3,7 @@ import * as chai from "chai";
 import {StandaloneCellBlock} from "../src/model/StandaloneCellBlock";
 
 describe("Rule", () => {
-  it("rule should correctly match cell block with no wild cards", () => {
+  it("should correctly match cell block with no wild cards", () => {
     var rule = new Rule('+', new StandaloneCellBlock([
         ['a', 'b', 'c'],
         ['d', 'm', 'e'],
@@ -19,16 +19,34 @@ describe("Rule", () => {
     chai.assert.isTrue(rule.matches(block));
   });
 
-  it("rule correctly reject cell block with no wild cards", () => {
+  it("should correctly reject cell block with no wild cards", () => {
     var rule = new Rule('+', new StandaloneCellBlock([
       ['a', 'b', 'c'],
       ['d', 'm', 'e'],
       ['f', 'g', 'h']
     ]), '-');
 
+    // 'z' rather than 'h' in lower right hand corner
     var block = new StandaloneCellBlock([
       ['a', 'b', 'c'],
       ['d', '+', 'e'],
+      ['f', 'g', 'z']
+    ]);
+
+    chai.assert.isFalse(rule.matches(block));
+  });
+
+  it("should correctly reject cell block with incorrect target", () => {
+    var rule = new Rule('+', new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['d', 'm', 'e'],
+      ['f', 'g', 'h']
+    ]), '-');
+
+    // '-' instead of '+' in the middle
+    var block = new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['d', '-', 'e'],
       ['f', 'g', 'z']
     ]);
 

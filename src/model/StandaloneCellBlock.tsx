@@ -27,8 +27,20 @@ export class StandaloneCellBlock implements CellBlock {
     return this.cells.length;
   }
 
+  public setCell(x: number, y: number, value: string) {
+    this.cells[y][x] = value;
+  }
+
   public getCell(x: number, y: number): string {
     // TODO: handle out of bounds gracefully
     return this.cells[y][x];
+  }
+
+  public setCells(cells: string[][]) {
+    this.cells = cells;
+  }
+
+  public copy(): StandaloneCellBlock {
+    return new StandaloneCellBlock(this.cells.slice());
   }
 }
