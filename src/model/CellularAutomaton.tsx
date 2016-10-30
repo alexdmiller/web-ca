@@ -14,7 +14,7 @@ export class CellularAutomaton {
         for (var y = 0; y < height; y++) {
             this.cells[y] = [];
             for (var x = 0; x < width; x++) {
-                this.cells[y][x] = '+';
+                this.cells[y][x] = ' ';
             }
         }
 
@@ -30,6 +30,7 @@ export class CellularAutomaton {
     }
 
     public getCell(x: number, y: number): string {
+        // TODO: handle out of bounds gracefully
         return this.cells[y][x];
     }
 
@@ -46,11 +47,23 @@ export class CellularAutomaton {
                 var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
 
                 if (rulesForCell) {
-                    rulesForCell.forEach((rule:Rule) => {
-                        // TODO: test if it maches
+                    rulesForCell.forEach((rule: Rule) => {
+                        // find top left of block in cells
+
+                        // check pattern
+
                     });
                 }
             }
         }
     }
 }
+
+
+/*
+
+x x x
+x m x
+x x x
+
+*/
