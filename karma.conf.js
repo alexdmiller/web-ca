@@ -50,7 +50,7 @@ module.exports = function(config) {
          */
         frameworks: ["mocha", "chai", "sinon"],
 
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_DEBUG,
 
         /*
          * By default, Karma loads all sibling NPM modules which have a name

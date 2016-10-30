@@ -1,54 +1,77 @@
+import {CellBlock} from "./CellBlock";
 export class Rule {
-    public static targetIdentifier: string = 'm';
+  public static targetIdentifier: string = 'm';
 
-    private target: string;
-    private targetX: number;
-    private targetY: number;
-    private pattern: string[][];
-    private transformation: string;
+  private target: string;
+  private targetX: number;
+  private targetY: number;
+  private pattern: CellBlock;
+  private transformation: string;
 
-    constructor(target: string, pattern: string[][], transformation: string) {
-        this.target = target;
-        this.pattern = pattern;
-        this.transformation = transformation;
+  constructor(target: string, pattern: CellBlock, transformation: string) {
+    this.target = target;
+    this.pattern = pattern;
+    this.transformation = transformation;
 
-        // TODO: enforce rectangular patterns
+    // TODO: enforce rectangular patterns
+    // TODO: only allow one targetIdentifier
 
-        for (var y = 0; y < pattern.length; y++) {
-            for (var x = 0; x < pattern.length; x++) {
-                if (pattern[y][x] == Rule.targetIdentifier) {
-                    this.targetX = x;
-                    this.targetY = y;
-                }
-            }
+    for (var y = 0; y < pattern.getHeight(); y++) {
+      for (var x = 0; x < pattern.getWidth(); x++) {
+        if (pattern.getCell(x, y) == Rule.targetIdentifier) {
+          this.targetX = x;
+          this.targetY = y;
         }
+      }
+    }
+  }
+
+  public getTarget(): string {
+    return this.target;
+  }
+
+  public getPattern(): CellBlock {
+    return this.pattern;
+  }
+
+  public getTransformation(): string {
+    return this.transformation;
+  }
+
+  public getWidth(): number {
+    return this.pattern.getWidth()
+  }
+
+  public getHeight(): number {
+    return this.pattern.getHeight();
+  }
+
+  public getTargetX(): number {
+    return this.targetX;
+  }
+
+  public getTargetY(): number {
+    return this.targetY;
+  }
+
+  public matches(block: CellBlock): boolean {
+    if (block.getWidth() != this.getWidth() && block.getHeight() != this.getHeight()) {
+      return false;
     }
 
-    public getTarget(): string {
-        return this.target;
+    for (var x = 0; x < block.getWidth(); x++) {
+      for (var y = 0; y < block.getHeight(); y++) {
+        var matchesExactly: boolean = this.pattern.getCell(x, y) == block.getCell(x, y);
+        var matchesTarget: boolean = (x == this.targetX) &&
+            (y == this.targetY) &&
+            (this.pattern.getCell(x, y) == Rule.targetIdentifier) &&
+            (block.getCell(x, y) == this.target);
+        if (!matchesExactly && !matchesTarget) {
+          return false;
+        }
+      }
     }
 
-    public getPattern(): string[][] {
-        return this.pattern;
-    }
-
-    public getTransformation(): string {
-        return this.transformation;
-    }
-
-    public getWidth(): number {
-        return this.pattern[0].length;
-    }
-
-    public getHeight(): number {
-        return this.pattern.length;
-    }
-
-    public getTargetX() {
-        return this.targetX;
-    }
-
-    public getTargetY() {
-        return this.targetY;
-    }
+    return true;
+  }
 }

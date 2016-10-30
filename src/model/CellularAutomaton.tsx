@@ -1,61 +1,50 @@
 import { Rule } from './Rule';
+import {CellBlock} from "./CellBlock";
+import {StandaloneCellBlock} from "./StandaloneCellBlock";
 
-export class CellularAutomaton {
-    private width: number;
-    private height: number;
-    private cells: string[][];
-    private rules: { [key:string]: Rule[] }
+export class CellularAutomaton implements CellBlock {
+  private rules: { [key:string]: Rule[] };
+    private cells: StandaloneCellBlock;
 
     constructor(width: number, height: number) {
-        this.width = width;
-        this.height = height;
-
-        this.cells = [];
-        for (var y = 0; y < height; y++) {
-            this.cells[y] = [];
-            for (var x = 0; x < width; x++) {
-                this.cells[y][x] = ' ';
-            }
-        }
-
-        this.rules = {};
+      this.rules = {};
+      this.cells = StandaloneCellBlock.withSize(width, height);
     }
 
     public getWidth(): number {
-        return this.width;
+      return this.cells.getWidth();
     }
 
     public getHeight(): number {
-        return this.height;
+      return this.cells.getHeight();
     }
 
     public getCell(x: number, y: number): string {
-        // TODO: handle out of bounds gracefully
-        return this.cells[y][x];
+      // TODO: handle out of bounds gracefully
+      return this.cells.getCell(x, y);
     }
 
     public addRule(rule: Rule):void {
-        if (!this.rules[rule.getTarget()]) {
-            this.rules[rule.getTarget()] = [];
-        }
-        this.rules[rule.getTarget()].push(rule);
+      if (!this.rules[rule.getTarget()]) {
+          this.rules[rule.getTarget()] = [];
+      }
+      this.rules[rule.getTarget()].push(rule);
     }
 
     public applyRules(): void {
-        for (var y = 0; y < this.height; y++) {
-            for (var x = 0; x < this.width; x++) {
-                var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
-
-                if (rulesForCell) {
-                    rulesForCell.forEach((rule: Rule) => {
-                        // find top left of block in cells
-
-                        // check pattern
-
-                    });
-                }
-            }
-        }
+      // for (var y = 0; y < this.height; y++) {
+      //   for (var x = 0; x < this.width; x++) {
+      //     var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
+      //       if (rulesForCell) {
+      //         rulesForCell.forEach((rule: Rule) => {
+      //             // find top left of block in cells
+      //
+      //             // check pattern
+      //
+      //         });
+      //       }
+      //     }
+      //   }
     }
 }
 
