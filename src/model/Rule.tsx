@@ -73,12 +73,13 @@ export default class Rule {
             (block.getCell(x, y) == this.target);
 
         // TODO: take wildcards into account
-
         if (!matchesExactly && !matchesTarget) {
           return false;
         }
       }
     }
+
+    console.log(this.pattern, block);
 
     return true;
   }

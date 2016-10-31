@@ -30,6 +30,10 @@ export default class CellularAutomaton implements CellBlock {
     this.cells.setCells(cells);
   }
 
+  public setCell(x: number, y: number, value: string) {
+    this.cells.setCell(x, y, value);
+  }
+
   public addRule(rule: Rule):void {
     if (!this.rules[rule.getTarget()]) {
         this.rules[rule.getTarget()] = [];
@@ -37,16 +41,17 @@ export default class CellularAutomaton implements CellBlock {
     this.rules[rule.getTarget()].push(rule);
   }
 
-  public applyRules(): void {
+  public applyRules(): CellularAutomaton {
+    console.log("---------");
     var nextGeneration = this.cells.copy();
 
     for (var y = 0; y < this.cells.getHeight(); y++) {
       for (var x = 0; x < this.cells.getWidth(); x++) {
+        console.log(x, y);
         var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
         if (rulesForCell) {
           rulesForCell.forEach((rule: Rule) => {
             // Find top left of block in cells
-
             var topLeft = {
               x: x - rule.getTargetX(),
               y: y - rule.getTargetY()
@@ -54,8 +59,9 @@ export default class CellularAutomaton implements CellBlock {
 
             var block = BackedCellBlock.donutMapped(this.cells, topLeft, rule.getWidth(), rule.getHeight());
 
-            // Check pattern
+            // Check patter
             if (rule.matches(block)) {
+              console.log('match', x, y);
               nextGeneration.setCell(x, y, rule.getTransformation());
             }
           });
@@ -64,5 +70,7 @@ export default class CellularAutomaton implements CellBlock {
     }
 
     this.cells = nextGeneration;
+
+    return this;
   }
 }

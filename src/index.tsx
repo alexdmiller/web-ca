@@ -6,13 +6,26 @@ import CellularAutomaton from './model/CellularAutomaton';
 import Rule from './model/Rule';
 import StandaloneCellBlock from "./model/StandaloneCellBlock";
 
-var ca: CellularAutomaton = new CellularAutomaton(40, 40);
+var ca: CellularAutomaton = new CellularAutomaton(10, 10);
+ca.setCell(4, 4, '+');
 
-var block = new StandaloneCellBlock([
-  ['m', '+']
-]);
+// ca.addRule(new Rule(' ', new StandaloneCellBlock([
+//   ['m', '+']
+// ]), '+'));
 
-ca.addRule(new Rule(' ', block, '+'));
+ca.addRule(new Rule(' ', new StandaloneCellBlock([
+  ['+', 'm']
+]), '+'));
+
+// ca.addRule(new Rule(' ', new StandaloneCellBlock([
+//   ['+'],
+//   ['m']
+// ]), '+'));
+
+// ca.addRule(new Rule(' ', new StandaloneCellBlock([
+//   ['m'],
+//   ['+']
+// ]), '+'));
 
 ca.applyRules();
 
