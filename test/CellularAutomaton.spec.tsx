@@ -1,7 +1,8 @@
-import { CellularAutomaton } from "../src/model/CellularAutomaton";
 import * as chai from "chai";
-import {StandaloneCellBlock} from "../src/model/StandaloneCellBlock";
-import {Rule} from "../src/model/Rule";
+
+import CellularAutomaton from "../src/model/CellularAutomaton";
+import StandaloneCellBlock from "../src/model/StandaloneCellBlock";
+import Rule from "../src/model/Rule";
 
 describe("CellularAutomaton", () => {
   var ca: CellularAutomaton;
@@ -37,7 +38,72 @@ describe("CellularAutomaton", () => {
 
     ca.applyRules();
 
-    //
-    // chai.assert.equal(ca.getCell(1, 1), '-');
+    chai.assert.equal(ca.getCell(1, 1), '-');
+  });
+
+  it("should not apply a rule if there is not a match", () => {
+    ca = new CellularAutomaton(3, 3);
+
+    ca.setCells([
+      [' ', ' ', ' '],
+      [' ', '+', '.'],
+      [' ', ' ', ' ']
+    ]);
+
+    var rule = new Rule('+', new StandaloneCellBlock([
+      [' ', ' ', ' '],
+      [' ', 'm', ' '],
+      [' ', ' ', ' ']
+    ]), '-');
+
+    ca.addRule(rule);
+
+    ca.applyRules();
+
+    chai.assert.equal(ca.getCell(1, 1), '+');
+  });
+
+  it("should not apply a rule if there is not a match", () => {
+    ca = new CellularAutomaton(3, 3);
+
+    ca.setCells([
+      [' ', ' ', ' '],
+      [' ', '+', '.'],
+      [' ', ' ', ' ']
+    ]);
+
+    var rule = new Rule('+', new StandaloneCellBlock([
+      [' ', ' ', ' '],
+      [' ', 'm', ' '],
+      [' ', ' ', ' ']
+    ]), '-');
+
+    ca.addRule(rule);
+
+    ca.applyRules();
+
+    chai.assert.equal(ca.getCell(1, 1), '+');
+  });
+
+  it("should apply a rule on the edge", () => {
+    ca = new CellularAutomaton(3, 3);
+
+    ca.setCells([
+      ['+', ' ', ' '],
+      [' ', ' ', ' '],
+      [' ', ' ', ' ']
+    ]);
+
+    var rule = new Rule('+', new StandaloneCellBlock([
+      [' ', ' ', ' '],
+      [' ', 'm', ' '],
+      [' ', ' ', ' ']
+    ]), '-');
+
+    ca.addRule(rule);
+
+    ca.applyRules();
+
+    chai.assert.equal(ca.getCell(0, 0), '-');
   });
 });

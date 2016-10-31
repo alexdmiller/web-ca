@@ -1,12 +1,13 @@
-import { Rule } from './Rule';
+import Rule from './Rule';
 import { CellBlock } from "./CellBlock";
-import { StandaloneCellBlock } from "./StandaloneCellBlock";
+import StandaloneCellBlock from "./StandaloneCellBlock";
 import BackedCellBlock from "./BackedCellBlock";
 
-export class CellularAutomaton implements CellBlock {
+export default class CellularAutomaton implements CellBlock {
   private rules: { [key:string]: Rule[] };
   private cells: StandaloneCellBlock;
 
+  // TODO: add parameter for topology
   constructor(width: number, height: number) {
     this.rules = {};
     this.cells = StandaloneCellBlock.withSize(width, height);
@@ -51,7 +52,7 @@ export class CellularAutomaton implements CellBlock {
               y: y - rule.getTargetY()
             };
 
-            var block = new BackedCellBlock(this.cells, topLeft, rule.getWidth(), rule.getHeight());
+            var block = BackedCellBlock.donutMapped(this.cells, topLeft, rule.getWidth(), rule.getHeight());
 
             // Check pattern
             if (rule.matches(block)) {

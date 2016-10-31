@@ -1,6 +1,7 @@
-import { Rule } from "../src/model/Rule";
 import * as chai from "chai";
-import {StandaloneCellBlock} from "../src/model/StandaloneCellBlock";
+
+import Rule from "../src/model/Rule";
+import StandaloneCellBlock from "../src/model/StandaloneCellBlock";
 
 describe("Rule", () => {
   it("should correctly match cell block with no wild cards", () => {

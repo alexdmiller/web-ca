@@ -1,6 +1,6 @@
 import {CellBlock} from './CellBlock'
 
-export class StandaloneCellBlock implements CellBlock {
+export default class StandaloneCellBlock implements CellBlock {
   static withSize(width: number, height: number) {
     var cells: string[][] = [];
     for (var y = 0; y < height; y++) {

@@ -1,5 +1,6 @@
 import {CellBlock} from "./CellBlock";
-export class Rule {
+
+export default class Rule {
   public static targetIdentifier: string = 'm';
 
   private target: string;
