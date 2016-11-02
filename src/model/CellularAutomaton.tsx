@@ -42,12 +42,10 @@ export default class CellularAutomaton implements CellBlock {
   }
 
   public applyRules(): CellularAutomaton {
-    console.log("---------");
     var nextGeneration = this.cells.copy();
 
     for (var y = 0; y < this.cells.getHeight(); y++) {
       for (var x = 0; x < this.cells.getWidth(); x++) {
-        console.log(x, y);
         var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
         if (rulesForCell) {
           rulesForCell.forEach((rule: Rule) => {
@@ -61,7 +59,6 @@ export default class CellularAutomaton implements CellBlock {
 
             // Check patter
             if (rule.matches(block)) {
-              console.log('match', x, y);
               nextGeneration.setCell(x, y, rule.getTransformation());
             }
           });
@@ -72,5 +69,17 @@ export default class CellularAutomaton implements CellBlock {
     this.cells = nextGeneration;
 
     return this;
+  }
+
+  public toString(): string {
+    // TODO: add borders
+    var result = "";
+    for (var y = 0; y < this.cells.getHeight(); y++) {
+      for (var x = 0; x < this.cells.getWidth(); x++) {
+        result += this.cells.getCell(x, y);
+      }
+      result += '\n';
+    }
+    return result;
   }
 }

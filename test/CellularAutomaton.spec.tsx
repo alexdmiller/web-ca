@@ -9,7 +9,7 @@ describe("CellularAutomaton", () => {
 
   it("should populate lattice with spaces upon construction", () => {
     ca = new CellularAutomaton(100, 100);
-
+  
     chai.assert.strictEqual(ca.getWidth(), 100);
     chai.assert.strictEqual(ca.getHeight(), 100);
     for (var x = 0; x < ca.getWidth(); x++) {
@@ -105,5 +105,26 @@ describe("CellularAutomaton", () => {
     ca.applyRules();
 
     chai.assert.equal(ca.getCell(0, 0), '-');
+  });
+
+  it("should only apply matching rules", () => {
+    ca = new CellularAutomaton(3, 3);
+
+    ca.setCells([
+      ['-', '-', '-', '-'],
+      [' ', '+', ' ', ' '],
+      ['-', '-', '-', '-']
+    ]);
+
+    var rule = new Rule(' ', new StandaloneCellBlock([
+      ['+', 'm'],
+    ]), '+');
+
+    ca.addRule(rule);
+
+    ca.applyRules();
+
+    chai.assert.equal(ca.getCell(2, 1), '+');
+    chai.assert.equal(ca.getCell(3, 1), ' ');
   });
 });

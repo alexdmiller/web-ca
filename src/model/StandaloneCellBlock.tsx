@@ -41,6 +41,24 @@ export default class StandaloneCellBlock implements CellBlock {
   }
 
   public copy(): StandaloneCellBlock {
-    return new StandaloneCellBlock(this.cells.slice());
+    var c = StandaloneCellBlock.withSize(this.getWidth(), this.getHeight());
+    for (var y = 0; y < this.getHeight(); y++) {
+      for (var x = 0; x < this.getWidth(); x++) {
+        c.setCell(x, y, this.getCell(x, y));
+      }
+    }
+    return c;
+  }
+
+  public toString(): string {
+    // TODO: add borders
+    var result = "";
+    for (var y = 0; y < this.getHeight(); y++) {
+      for (var x = 0; x < this.getWidth(); x++) {
+        result += this.getCell(x, y);
+      }
+      result += '\n';
+    }
+    return result;
   }
 }

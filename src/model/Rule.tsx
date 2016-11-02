@@ -79,8 +79,6 @@ export default class Rule {
       }
     }
 
-    console.log(this.pattern, block);
-
     return true;
   }
 }

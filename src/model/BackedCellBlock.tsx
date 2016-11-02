@@ -28,15 +28,15 @@ export default class BackedCellBlock implements CellBlock {
     this.mappingFunction = mappingFunction;
   }
 
-  getWidth():number {
+  public getWidth():number {
     return this.width;
   }
 
-  getHeight():number {
+  public getHeight():number {
     return this.height
   }
 
-  getCell(x:number, y:number):string {
+  public getCell(x:number, y:number):string {
     var mapped: Coordinate = this.mappingFunction(
         this.topLeft,
         this.backingBlock.getWidth(),
@@ -44,5 +44,17 @@ export default class BackedCellBlock implements CellBlock {
         {x: x, y: y});
 
     return this.backingBlock.getCell(mapped.x, mapped.y);
+  }
+
+  public toString(): string {
+    // TODO: add borders
+    var result = "";
+    for (var y = 0; y < this.getHeight(); y++) {
+      for (var x = 0; x < this.getWidth(); x++) {
+        result += this.getCell(x, y);
+      }
+      result += '\n';
+    }
+    return result;
   }
 }
