@@ -1,10 +1,14 @@
 {
   "dependencies": {
     "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "react-addons-update": "registry:npm/react-addons-update#0.14.0+20160324044346",
+    "react-bootstrap": "github:react-bootstrap/react-bootstrap-typescript/index.d.ts",
     "sinon": "registry:npm/sinon#1.16.0+20160723033700"
   },
   "globalDependencies": {
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",
-    "react": "registry:dt/react#0.14.0+20161008064207"
+    "react": "registry:dt/react#0.14.0+20161008064207",
+    "react-addons-update": "registry:dt/react-addons-update#0.14.0+20160316155526",
+    "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160806072414"
   }
 }

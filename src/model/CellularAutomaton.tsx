@@ -36,7 +36,7 @@ export default class CellularAutomaton implements CellBlock {
 
   public addRule(rule: Rule):void {
     if (!this.rules[rule.getTarget()]) {
-        this.rules[rule.getTarget()] = [];
+      this.rules[rule.getTarget()] = [];
     }
     this.rules[rule.getTarget()].push(rule);
   }
