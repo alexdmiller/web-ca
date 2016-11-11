@@ -1,25 +1,26 @@
 import {CellBlock} from "./CellBlock";
 
 export default class Rule {
-  public static targetIdentifier: string = 'm';
+  public static TARGET: string = 'm';
 
   private target: string;
   private targetX: number;
   private targetY: number;
-  private pattern: CellBlock;
-  private transformation: string;
+  private beforePattern: CellBlock;
+  private afterPattern: CellBlock;
 
-  constructor(target: string, pattern: CellBlock, transformation: string) {
+  constructor(target: string, beforePattern: CellBlock, afterPattern: CellBlock) {
     this.target = target;
-    this.pattern = pattern;
-    this.transformation = transformation;
+    this.beforePattern = beforePattern;
+    this.afterPattern = afterPattern;
 
     // TODO: enforce rectangular patterns
+    // TODO: enforce before pattern and after pattern are the same size
     // TODO: only allow one targetIdentifier
 
-    for (var y = 0; y < pattern.getHeight(); y++) {
-      for (var x = 0; x < pattern.getWidth(); x++) {
-        if (pattern.getCell(x, y) == Rule.targetIdentifier) {
+    for (var y = 0; y < beforePattern.getHeight(); y++) {
+      for (var x = 0; x < beforePattern.getWidth(); x++) {
+        if (beforePattern.getCell(x, y) == Rule.TARGET) {
           this.targetX = x;
           this.targetY = y;
         }
@@ -27,7 +28,7 @@ export default class Rule {
     }
 
     if (this.targetX == undefined) {
-      throw "Target place holder identifier '" + Rule.targetIdentifier + "' not found in pattern";
+      throw "Target place holder identifier '" + Rule.TARGET + "' not found in pattern";
     }
   }
 
@@ -35,20 +36,20 @@ export default class Rule {
     return this.target;
   }
 
-  public getPattern(): CellBlock {
-    return this.pattern;
+  public getBeforePattern(): CellBlock {
+    return this.beforePattern;
   }
 
-  public getTransformation(): string {
-    return this.transformation;
+  public getAfterPattern(): CellBlock {
+    return this.afterPattern;
   }
 
   public getWidth(): number {
-    return this.pattern.getWidth()
+    return this.beforePattern.getWidth()
   }
 
   public getHeight(): number {
-    return this.pattern.getHeight();
+    return this.beforePattern.getHeight();
   }
 
   public getTargetX(): number {
@@ -66,10 +67,10 @@ export default class Rule {
 
     for (var x = 0; x < block.getWidth(); x++) {
       for (var y = 0; y < block.getHeight(); y++) {
-        var matchesExactly: boolean = this.pattern.getCell(x, y) == block.getCell(x, y);
+        var matchesExactly: boolean = this.beforePattern.getCell(x, y) == block.getCell(x, y);
         var matchesTarget: boolean = (x == this.targetX) &&
             (y == this.targetY) &&
-            (this.pattern.getCell(x, y) == Rule.targetIdentifier) &&
+            (this.beforePattern.getCell(x, y) == Rule.TARGET) &&
             (block.getCell(x, y) == this.target);
 
         // TODO: take wildcards into account

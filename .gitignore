@@ -3,3 +3,4 @@ node_modules
 dist
 *.iml
 typings
+.DS_Store

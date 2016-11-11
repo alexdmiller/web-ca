@@ -19,7 +19,7 @@ describe("CellularAutomaton", () => {
     }
   });
 
-  it("should apply a single rule correctly", () => {
+  it("should apply a single rule correctly (no wildcards)", () => {
     ca = new CellularAutomaton(3, 3);
 
     ca.setCells([
@@ -29,10 +29,14 @@ describe("CellularAutomaton", () => {
     ]);
 
     var rule = new Rule('+', new StandaloneCellBlock([
-        [' ', ' ', ' '],
-        [' ', 'm', ' '],
-        [' ', ' ', ' ']
-    ]), '-');
+      [' ', ' ', ' '],
+      [' ', 'm', ' '],
+      [' ', ' ', ' ']
+    ]), new StandaloneCellBlock([
+      [' ', ' ', ' '],
+      [' ', '-', ' '],
+      [' ', ' ', ' ']
+    ]));
 
     ca.addRule(rule);
 
@@ -54,7 +58,11 @@ describe("CellularAutomaton", () => {
       [' ', ' ', ' '],
       [' ', 'm', ' '],
       [' ', ' ', ' ']
-    ]), '-');
+    ]), new StandaloneCellBlock([
+      [' ', ' ', ' '],
+      [' ', '-', ' '],
+      [' ', ' ', ' ']
+    ]));
 
     ca.addRule(rule);
 
@@ -63,29 +71,7 @@ describe("CellularAutomaton", () => {
     chai.assert.equal(ca.getCell(1, 1), '+');
   });
 
-  it("should not apply a rule if there is not a match", () => {
-    ca = new CellularAutomaton(3, 3);
-
-    ca.setCells([
-      [' ', ' ', ' '],
-      [' ', '+', '.'],
-      [' ', ' ', ' ']
-    ]);
-
-    var rule = new Rule('+', new StandaloneCellBlock([
-      [' ', ' ', ' '],
-      [' ', 'm', ' '],
-      [' ', ' ', ' ']
-    ]), '-');
-
-    ca.addRule(rule);
-
-    ca.applyRules();
-
-    chai.assert.equal(ca.getCell(1, 1), '+');
-  });
-
-  it("should apply a rule on the edge", () => {
+  it("should apply a rule on the edge (no wildcards)", () => {
     ca = new CellularAutomaton(3, 3);
 
     ca.setCells([
@@ -98,7 +84,11 @@ describe("CellularAutomaton", () => {
       [' ', ' ', ' '],
       [' ', 'm', ' '],
       [' ', ' ', ' ']
-    ]), '-');
+    ]), new StandaloneCellBlock([
+      ['*', '*', '*'],
+      ['*', '-', '*'],
+      ['*', '*', '*']
+    ]));
 
     ca.addRule(rule);
 
@@ -116,9 +106,11 @@ describe("CellularAutomaton", () => {
       ['-', '-', '-', '-']
     ]);
 
-    var rule = new Rule(' ', new StandaloneCellBlock([
-      ['+', 'm'],
-    ]), '+');
+    var rule = new Rule('+', new StandaloneCellBlock([
+      ['m', ' '],
+    ]), new StandaloneCellBlock([
+      [' ', '+'],
+    ]));
 
     ca.addRule(rule);
 

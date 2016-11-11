@@ -9,7 +9,11 @@ describe("Rule", () => {
         ['a', 'b', 'c'],
         ['d', 'm', 'e'],
         ['f', 'g', 'h']
-    ]), '-');
+    ]), new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['d', 'm', 'e'],
+      ['f', 'g', 'h']
+    ]));
 
     var block = new StandaloneCellBlock([
         ['a', 'b', 'c'],
@@ -20,12 +24,16 @@ describe("Rule", () => {
     chai.assert.isTrue(rule.matches(block));
   });
 
-  it("should correctly reject cell block with no wild cards", () => {
+  it("should correctly reject cell block that does not match (no wild cards)", () => {
     var rule = new Rule('+', new StandaloneCellBlock([
       ['a', 'b', 'c'],
       ['d', 'm', 'e'],
       ['f', 'g', 'h']
-    ]), '-');
+    ]), new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['d', 'm', 'e'],
+      ['f', 'g', 'h']
+    ]));
 
     // 'z' rather than 'h' in lower right hand corner
     var block = new StandaloneCellBlock([
@@ -42,7 +50,11 @@ describe("Rule", () => {
       ['a', 'b', 'c'],
       ['d', 'm', 'e'],
       ['f', 'g', 'h']
-    ]), '-');
+    ]), new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['d', 'm', 'e'],
+      ['f', 'g', 'h']
+    ]));
 
     // '-' instead of '+' in the middle
     var block = new StandaloneCellBlock([

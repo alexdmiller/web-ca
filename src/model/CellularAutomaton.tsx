@@ -30,15 +30,23 @@ export default class CellularAutomaton implements CellBlock {
     this.cells.setCells(cells);
   }
 
-  public setCell(x: number, y: number, value: string) {
+  public setCell(x: number, y: number, value: string): void {
     this.cells.setCell(x, y, value);
   }
 
-  public addRule(rule: Rule):void {
+  public copyCells(cells: CellBlock, startX: number, startY: number): void {
+    this.cells.copyCells(cells, startX, startY);
+  }
+
+  public addRule(rule: Rule): void {
     if (!this.rules[rule.getTarget()]) {
       this.rules[rule.getTarget()] = [];
     }
     this.rules[rule.getTarget()].push(rule);
+  }
+
+  public getRules(): { [key:string]: Rule[] } {
+    return this.rules;
   }
 
   public applyRules(): CellularAutomaton {
@@ -57,9 +65,10 @@ export default class CellularAutomaton implements CellBlock {
 
             var block = BackedCellBlock.donutMapped(this.cells, topLeft, rule.getWidth(), rule.getHeight());
 
-            // Check patter
+            // Check pattern
             if (rule.matches(block)) {
-              nextGeneration.setCell(x, y, rule.getTransformation());
+              var nextGenBlock = BackedCellBlock.donutMapped(nextGeneration, topLeft, rule.getWidth(), rule.getHeight());
+              nextGenBlock.copyCells(rule.getAfterPattern(), 0, 0);
             }
           });
         }

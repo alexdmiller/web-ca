@@ -1,6 +1,7 @@
 import * as React from "react";
+import RuleView from './RuleView';
 import CellularAutomaton from "../model/CellularAutomaton";
-import { Glyphicon, NavItem, Nav, Navbar, Grid, Row, Col, Button, ButtonGroup, ButtonToolbar, Panel } from "react-bootstrap";
+import { Glyphicon, Navbar, Grid, Row, Col, Button, ButtonGroup, ButtonToolbar, Panel } from "react-bootstrap";
 import Rule from '../model/Rule';
 import StandaloneCellBlock from '../model/StandaloneCellBlock';
 import update = require('react-addons-update');
@@ -30,21 +31,29 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
 
     ca.addRule(new Rule(' ', new StandaloneCellBlock([
       ['m', '+']
-    ]), '+'));
+    ]), new StandaloneCellBlock([
+      ['+', 'm']
+    ])));
 
     ca.addRule(new Rule(' ', new StandaloneCellBlock([
       ['+', 'm']
-    ]), '+'));
+    ]), new StandaloneCellBlock([
+      ['+', 'm']
+    ])));
 
     ca.addRule(new Rule(' ', new StandaloneCellBlock([
       ['+'],
       ['m']
-    ]), '+'));
+    ]), new StandaloneCellBlock([
+      ['+', 'm']
+    ])));
 
     ca.addRule(new Rule(' ', new StandaloneCellBlock([
       ['m'],
       ['+']
-    ]), '+'));
+    ]), new StandaloneCellBlock([
+      ['+', 'm']
+    ])));
 
     ca.applyRules();
 
@@ -80,11 +89,11 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
   };
 
   private resetAutomaton = () => {
-
+    // TODO
   };
 
   private saveAutomaton = () => {
-
+    // TODO
   };
 
   render() {
@@ -110,24 +119,34 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
         <Grid>
           <Row>
             <Col md={12}>
-              <Panel>
-                <ButtonToolbar>
-                  <ButtonGroup>
-                    { !this.state.playing ?
-                        <Button onClick={this.playAutomaton}><Glyphicon glyph="play" /></Button> :
-                        <Button onClick={this.pauseAutomaton}><Glyphicon glyph="pause" /></Button>
-                    }
-                    <Button disabled={this.state.playing} onClick={this.step}><Glyphicon glyph="step-forward" /></Button>
-                  </ButtonGroup>
+              <Panel header={
+                  <ButtonToolbar>
+                      <ButtonGroup>
+                        {
+                          !this.state.playing ?
+                              <Button onClick={this.playAutomaton}><Glyphicon glyph="play" /></Button> :
+                              <Button onClick={this.pauseAutomaton}><Glyphicon glyph="pause" /></Button>
+                        }
+                        <Button disabled={this.state.playing} onClick={this.step}><Glyphicon glyph="step-forward" /></Button>
+                      </ButtonGroup>
 
-                  <ButtonGroup>
-                    <Button onClick={this.resetAutomaton}>Reset</Button>
-                  </ButtonGroup>
-                </ButtonToolbar>
-
+                      <ButtonGroup>
+                        <Button onClick={this.resetAutomaton}>Reset</Button>
+                      </ButtonGroup>
+                   </ButtonToolbar>}>
                 <div className="ca-view">
                   { elements.map((element: any) => element) }
                 </div>
+              </Panel>
+
+              <Panel header={<h3>Rules</h3>}>
+                { this.state.automaton ? Object.keys(this.state.automaton.getRules()).map((target: string) =>
+                  <Panel>
+                    { this.state.automaton.getRules()[target].map((rule: Rule) =>
+                        <RuleView rule={rule} />
+                    )}
+                  </Panel>
+                ) : '' }
               </Panel>
             </Col>
           </Row>

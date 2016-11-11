@@ -1,7 +1,7 @@
 import {CellBlock} from './CellBlock';
 import {Coordinate} from './Coordinate';
 
-export default class BackedCellBlock implements CellBlock {
+export default class BackedCellBlock extends CellBlock {
   private static donutMapping(topLeft: Coordinate, width: number, height: number, p: Coordinate) {
     return {
       x: (((topLeft.x + p.x) % width) + width) % width,
@@ -20,6 +20,8 @@ export default class BackedCellBlock implements CellBlock {
   private mappingFunction: Function;
 
   public constructor(backingBlock: CellBlock, topLeft: Coordinate, width: number, height: number, mappingFunction: Function) {
+    super();
+    
     // TODO: ensure valid bounds
     this.backingBlock = backingBlock;
     this.topLeft = topLeft;
@@ -44,6 +46,16 @@ export default class BackedCellBlock implements CellBlock {
         {x: x, y: y});
 
     return this.backingBlock.getCell(mapped.x, mapped.y);
+  }
+
+  public setCell(x: number, y: number, value: string) {
+    var mapped: Coordinate = this.mappingFunction(
+        this.topLeft,
+        this.backingBlock.getWidth(),
+        this.backingBlock.getHeight(),
+        {x: x, y: y});
+
+    return this.backingBlock.setCell(mapped.x, mapped.y, value);
   }
 
   public toString(): string {
