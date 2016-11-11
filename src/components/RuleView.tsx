@@ -12,9 +12,15 @@ export default class RuleView extends React.Component<RuleViewProps, {}> {
   render() {
     return (
       <Panel>
-        { this.props.rule.getTarget() }
+        <Panel>
+          When pattern is...
+          <CellBlockView cells={this.props.rule.getBeforePattern()} />
+        </Panel>
 
-        <CellBlockView cells={this.props.rule.getBeforePattern()} />
+        <Panel>
+          Transform into...
+          <CellBlockView cells={this.props.rule.getAfterPattern()} />
+        </Panel>
       </Panel>
     );
   }
