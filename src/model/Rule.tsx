@@ -1,4 +1,5 @@
 import {CellBlock} from "./CellBlock";
+import StandaloneCellBlock from "./StandaloneCellBlock";
 
 export default class Rule {
   public static TARGET: string = 'm';
@@ -59,6 +60,11 @@ export default class Rule {
   public getTargetY(): number {
     return this.targetY;
   }
+
+  // public withSize(newWidth: number, newHeight: number): Rule {
+  //
+  //   var newBeforePattern = new StandaloneCellBlock()
+  // }
 
   public matches(block: CellBlock): boolean {
     if (block.getWidth() != this.getWidth() && block.getHeight() != this.getHeight()) {

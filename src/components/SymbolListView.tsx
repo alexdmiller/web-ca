@@ -1,6 +1,42 @@
 import * as React from "react";
 import update = require('react-addons-update');
-import { Panel, Button } from "react-bootstrap";
+import { Panel, Button, ButtonProps } from "react-bootstrap";
+import { DragSource } from 'react-dnd';
+
+interface SymbolProps {
+  selected: boolean
+  connectDragSource?: any
+  isDragging?: boolean
+  onClick: Function
+  symbol: string
+}
+
+class Symbol extends React.Component<SymbolProps, {}> {
+  render() {
+    return (
+        this.props.connectDragSource(<div><Button
+            bsStyle={ this.props.selected ? "primary" : "default" }
+            onClick={() => this.props.onClick(this.props.symbol)}>
+          { this.props.symbol }
+        </Button></div>)
+    );
+  }
+}
+
+const symbolDragSource = {
+  beginDrag(props: any) {
+    return  {};
+  }
+};
+
+function collect(connect: any, monitor: any) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+var DraggableSymbol =  DragSource('Symbol', symbolDragSource, collect)(Symbol) as React.ComponentClass<SymbolProps>;
 
 interface SymbolListViewProps {
   symbols: string[]
@@ -14,11 +50,13 @@ export default class SymbolListView extends React.Component<SymbolListViewProps,
       <Panel header={<h3>Symbols</h3>}>
         <div className="cell-block-view">
           { this.props.symbols.map((symbol: string) => {
-            return <Button
-                bsStyle={ this.props.selectedSymbol == symbol ? "primary" : "default" }
-                onClick={() => this.props.onSymbolSelected(symbol)}>
-              {symbol}
-            </Button>
+            return (
+                <DraggableSymbol
+                    symbol={symbol}
+                    selected={this.props.selectedSymbol == symbol}
+                    onClick={this.props.onSymbolSelected}>
+                  {symbol}
+                </DraggableSymbol>);
           })}
         </div>
       </Panel>

@@ -4,18 +4,28 @@
         <meta charset="UTF-8" />
         <title>Hello React!</title>
         <style>
-            .cell-block-view span {
-                display: inline-block;
+            .ca-row {
+                display: table-row;
+            }
+
+            .ca-cell {
+                display: table-cell;
                 width: 15px;
                 height: 15px;
                 overflow: hidden;
-                font-size: 15px;
-                vertical-align: middle;
                 line-height: 15px;
+                text-align: center;
+                border: 1px solid #EEE;
+            }
+
+            .ca-cell.selected {
+                background-color: #CCC;
             }
 
             .cell-block-view {
+                display: table;
                 font-family: Consolas, Menlo, Monaco, monospace;
+                border-collapse: collapse;
             }
         </style>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">

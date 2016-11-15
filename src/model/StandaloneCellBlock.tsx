@@ -42,6 +42,10 @@ export default class StandaloneCellBlock extends CellBlock {
     this.cells = cells;
   }
 
+  public withSize(newWidth: number, newHeight: number) {
+    // TODO: implement
+  }
+
   public copy(): StandaloneCellBlock {
     var c = StandaloneCellBlock.withSize(this.getWidth(), this.getHeight());
     for (var y = 0; y < this.getHeight(); y++) {

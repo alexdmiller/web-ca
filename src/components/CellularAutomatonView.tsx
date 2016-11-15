@@ -8,6 +8,8 @@ import SymbolListView from './SymbolListView';
 import CellularAutomaton from "../model/CellularAutomaton";
 import Rule from '../model/Rule';
 import StandaloneCellBlock from '../model/StandaloneCellBlock';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 interface CellularAutomatonViewProps {
 }
@@ -19,7 +21,7 @@ interface CellularAutomatonViewState {
   selectedSymbol: string
 }
 
-export default class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, CellularAutomatonViewState> {
+class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, CellularAutomatonViewState> {
   constructor(props : CellularAutomatonViewProps) {
     super(props);
     this.state = {
@@ -146,3 +148,5 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     );
   }
 }
+
+export default DragDropContext(HTML5Backend)(CellularAutomatonView) as React.ComponentClass<CellularAutomatonViewProps>;
