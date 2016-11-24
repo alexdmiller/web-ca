@@ -25,7 +25,7 @@ class Symbol extends React.Component<SymbolProps, {}> {
 
 const symbolDragSource = {
   beginDrag(props: any) {
-    return  {};
+    return  { symbol: props.symbol };
   }
 };
 
@@ -36,7 +36,7 @@ function collect(connect: any, monitor: any) {
   }
 }
 
-var DraggableSymbol =  DragSource('Symbol', symbolDragSource, collect)(Symbol) as React.ComponentClass<SymbolProps>;
+var DraggableSymbol = DragSource('symbol', symbolDragSource, collect)(Symbol) as React.ComponentClass<SymbolProps>;
 
 interface SymbolListViewProps {
   symbols: string[]

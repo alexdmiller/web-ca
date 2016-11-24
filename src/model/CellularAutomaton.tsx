@@ -30,8 +30,9 @@ export default class CellularAutomaton implements CellBlock {
     this.cells.setCells(cells);
   }
 
-  public setCell(x: number, y: number, value: string): void {
+  public setCell(x: number, y: number, value: string): CellularAutomaton {
     this.cells.setCell(x, y, value);
+    return this;
   }
 
   public copyCells(cells: CellBlock, startX: number, startY: number): void {
@@ -47,6 +48,10 @@ export default class CellularAutomaton implements CellBlock {
 
   public getRules(): { [key:string]: Rule[] } {
     return this.rules;
+  }
+
+  public getRulesForSymbol(symbol: string): Rule[] {
+    return this.rules[symbol];
   }
 
   public applyRules(): CellularAutomaton {

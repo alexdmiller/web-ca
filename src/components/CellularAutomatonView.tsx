@@ -95,6 +95,21 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
     }));
   };
 
+  private onCellChanged = (x: number, y: number, newSymbol: string) => {
+    this.setState(update(this.state, {
+      automaton: { $set: this.state.automaton.setCell(x, y, newSymbol) }
+    }));
+  };
+
+  private onRuleChanged = (symbol: string, ruleIndex: number): (newRule: Rule) => void => {
+    return (newRule: Rule): void => {
+      this.state.automaton.getRulesForSymbol(symbol)[ruleIndex] = newRule;
+      this.setState(update(this.state, {
+        automaton: {$set: this.state.automaton}
+      }));
+    };
+  };
+
   render() {
     return (
       <div>
@@ -123,7 +138,7 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
                         <Button onClick={this.resetAutomaton}>Reset</Button>
                       </ButtonGroup>
                   </ButtonToolbar>}>
-                  <CellBlockView cells={this.state.automaton} />
+                  <CellBlockView cells={this.state.automaton} onCellChanged={this.onCellChanged} />
               </Panel>
             </Col>
             <Col md={6}>
@@ -136,8 +151,11 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
 
               { this.state.selectedSymbol ?
                 <Panel header={<h4>Rules for { this.state.selectedSymbol }</h4>}>
-                  { this.state.automaton.getRules()[this.state.selectedSymbol].map((rule: Rule) =>
-                    <RuleView rule={rule} />
+                  { this.state.automaton.getRules()[this.state.selectedSymbol].map((rule: Rule, index: number) =>
+                    <RuleView
+                        rule={rule}
+                        onRuleChanged={this.onRuleChanged(this.state.selectedSymbol, index)}
+                    />
                   )}
                 </Panel>
               : '' }
