@@ -36,6 +36,13 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
     var ca: CellularAutomaton = new CellularAutomaton(20, 20);
     ca.setCell(4, 4, '+');
 
+    ca.addRule(new Rule(' ', new StandaloneCellBlock([
+      ['m']
+    ]), new StandaloneCellBlock([
+      ['+']
+    ])));
+
+
     ca.addRule(new Rule('+', new StandaloneCellBlock([
       ['m', ' ']
     ]), new StandaloneCellBlock([
