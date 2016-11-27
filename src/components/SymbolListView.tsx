@@ -40,7 +40,7 @@ export default class SymbolListView extends React.Component<SymbolListViewProps,
   render() {
     return (
       <Panel header={<h3>Symbols</h3>}>
-        <div className="cell-block-view">
+        <div className="symbol-list">
           { this.props.symbols.map((symbol: string) => {
             return (
                 <Symbol

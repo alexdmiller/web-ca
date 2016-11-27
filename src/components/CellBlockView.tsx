@@ -1,15 +1,26 @@
 import * as React from "react";
 import update = require('react-addons-update');
-import {CellBlock} from "../model/CellBlock";
+import {CellBlock, HorizontalAnchor, VerticalAnchor} from "../model/CellBlock";
 import CellView from "../components/CellView.tsx"
 
 
 interface CellBlockViewProps {
   cells: CellBlock
+  onCellsUpdated?: CellBlock
   onCellClicked?: (x: number, y: number) => void
+  resizable?: boolean
 }
 
+
 export default class CellBlockView extends React.Component<CellBlockViewProps, {}> {
+  private onResize = (width: number, height: number, horizontalAnchor: HorizontalAnchor, verticalAnchor: VerticalAnchor): () => void => {
+    return () => {
+      // TODO: figure out anchor stuff
+      this.props.cells.resize(width, height, horizontalAnchor, verticalAnchor);
+    };
+  };
+
+
   private onCellClicked = (x: number, y: number): () => void => {
     return () => {
       this.props.onCellClicked(x, y);
@@ -32,8 +43,10 @@ export default class CellBlockView extends React.Component<CellBlockViewProps, {
     }
 
     return (
-        <div className="cell-block-view">
-          { elements.map((element: any) => element) }
+        <div>
+          <div className="cell-block-view">
+            { elements.map((element: any) => element) }
+          </div>
         </div>
     );
   }

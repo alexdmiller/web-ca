@@ -1,4 +1,4 @@
-import {CellBlock} from './CellBlock';
+import {CellBlock, HorizontalAnchor, VerticalAnchor} from './CellBlock';
 import {Coordinate} from './Coordinate';
 
 export default class BackedCellBlock extends CellBlock {
@@ -57,6 +57,12 @@ export default class BackedCellBlock extends CellBlock {
 
     return this.backingBlock.setCell(mapped.x, mapped.y, value);
   }
+
+  public resize(newWidth: number, newHeight: number, horizontalAnchor: HorizontalAnchor, verticalAnchor: VerticalAnchor): CellBlock {
+    // TODO: implement
+    return null;
+  }
+
 
   public toString(): string {
     // TODO: add borders

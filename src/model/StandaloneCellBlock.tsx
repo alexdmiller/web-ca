@@ -1,4 +1,4 @@
-import {CellBlock} from './CellBlock'
+import {CellBlock, HorizontalAnchor, VerticalAnchor} from './CellBlock'
 
 export default class StandaloneCellBlock extends CellBlock {
   static withSize(width: number, height: number) {
@@ -6,6 +6,7 @@ export default class StandaloneCellBlock extends CellBlock {
     for (var y = 0; y < height; y++) {
       cells[y] = [];
       for (var x = 0; x < width; x++) {
+        // TODO: factor out empty cell into constant
         cells[y][x] = ' ';
       }
     }
@@ -30,7 +31,9 @@ export default class StandaloneCellBlock extends CellBlock {
   }
 
   public setCell(x: number, y: number, value: string) {
-    this.cells[y][x] = value;
+    if (x < this.getWidth() && y < this.getHeight()) {
+      this.cells[y][x] = value;
+    }
   }
 
   public getCell(x: number, y: number): string {
@@ -42,8 +45,16 @@ export default class StandaloneCellBlock extends CellBlock {
     this.cells = cells;
   }
 
-  public withSize(newWidth: number, newHeight: number) {
-    // TODO: implement
+  public resize(
+      newWidth: number,
+      newHeight: number,
+      horizontalAnchor: HorizontalAnchor,
+      verticalAnchor: VerticalAnchor): CellBlock {
+    var c = StandaloneCellBlock.withSize(newWidth, newHeight);
+    var ax = horizontalAnchor == HorizontalAnchor.Left ? 0 : newWidth - this.getWidth();
+    var ay = verticalAnchor == VerticalAnchor.Top ? 0 : newHeight - this.getHeight();
+    c.copyCells(this, ax, ay, false);
+    return c;
   }
 
   public copy(): StandaloneCellBlock {

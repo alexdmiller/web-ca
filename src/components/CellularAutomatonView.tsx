@@ -136,21 +136,22 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
           <Row>
             <Col md={6}>
               <Panel header={
-                  <ButtonToolbar>
-                      <ButtonGroup>
-                        {
-                          !this.state.playing ?
-                              <Button onClick={this.playAutomaton}><Glyphicon glyph="play" /></Button> :
-                              <Button onClick={this.pauseAutomaton}><Glyphicon glyph="pause" /></Button>
-                        }
-                        <Button disabled={this.state.playing} onClick={this.step}><Glyphicon glyph="step-forward" /></Button>
-                      </ButtonGroup>
+                <ButtonToolbar>
+                  <ButtonGroup>
+                    {
+                      !this.state.playing ?
+                          <Button onClick={this.playAutomaton}><Glyphicon glyph="play" /></Button> :
+                          <Button onClick={this.pauseAutomaton}><Glyphicon glyph="pause" /></Button>
+                    }
+                    <Button disabled={this.state.playing} onClick={this.step}><Glyphicon glyph="step-forward" /></Button>
+                  </ButtonGroup>
 
-                      <ButtonGroup>
-                        <Button onClick={this.resetAutomaton}>Reset</Button>
-                      </ButtonGroup>
-                  </ButtonToolbar>}>
-                  <CellBlockView cells={this.state.automaton} onCellClicked={this.onCellClicked} />
+                  <ButtonGroup>
+                    <Button onClick={this.resetAutomaton}>Reset</Button>
+                  </ButtonGroup>
+                </ButtonToolbar>}>
+
+                { this.state.automaton ? <CellBlockView cells={this.state.automaton} onCellClicked={this.onCellClicked} /> : ''}
               </Panel>
             </Col>
             <Col md={6}>

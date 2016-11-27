@@ -1,5 +1,5 @@
 import Rule from './Rule';
-import { CellBlock } from "./CellBlock";
+import { CellBlock, HorizontalAnchor, VerticalAnchor } from "./CellBlock";
 import StandaloneCellBlock from "./StandaloneCellBlock";
 import BackedCellBlock from "./BackedCellBlock";
 
@@ -35,8 +35,12 @@ export default class CellularAutomaton implements CellBlock {
     return this;
   }
 
-  public copyCells(cells: CellBlock, startX: number, startY: number): void {
-    this.cells.copyCells(cells, startX, startY);
+  public copyCells(cells: CellBlock, startX: number, startY: number, ignoreWildcards: boolean): void {
+    this.cells.copyCells(cells, startX, startY, ignoreWildcards);
+  }
+
+  public resize(newWidth: number, newHeight: number, horizontalAnchor: HorizontalAnchor, verticalAnchor: VerticalAnchor): CellBlock {
+    return this.cells.resize(newWidth, newHeight, horizontalAnchor, verticalAnchor);
   }
 
   public addRule(rule: Rule): void {
@@ -73,7 +77,7 @@ export default class CellularAutomaton implements CellBlock {
             // Check pattern
             if (rule.matches(block)) {
               var nextGenBlock = BackedCellBlock.donutMapped(nextGeneration, topLeft, rule.getWidth(), rule.getHeight());
-              nextGenBlock.copyCells(rule.getAfterPattern(), 0, 0);
+              nextGenBlock.copyCells(rule.getAfterPattern(), 0, 0, true);
             }
           });
         }
