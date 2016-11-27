@@ -3,7 +3,8 @@ import update = require('react-addons-update');
 import { Panel, Button, ButtonProps } from "react-bootstrap";
 
 interface SymbolProps {
-  selected: boolean
+  active: boolean
+  editing: boolean
   onClick: Function
   symbol: string
 }
@@ -12,8 +13,8 @@ class Symbol extends React.Component<SymbolProps, {}> {
   render() {
     return (
         <div><Button
-            bsStyle={ this.props.selected ? "primary" : "default" }
-            onClick={() => this.props.onClick(this.props.symbol)}>
+            bsStyle={ this.props.active ? 'primary' : this.props.editing ? 'default' : 'link' }
+            onClick={(event: any) => this.props.onClick(this.props.symbol, event)}>
           { this.props.symbol }
         </Button></div>);
   }
@@ -21,11 +22,21 @@ class Symbol extends React.Component<SymbolProps, {}> {
 
 interface SymbolListViewProps {
   symbols: string[]
-  selectedSymbol: string
-  onSymbolSelected: Function
+  activeSymbol: string
+  editingSymbol: string
+  onSelectSymbol: (symbol: string) => void
+  onEditSymbol: (symbol: string) => void
 }
 
 export default class SymbolListView extends React.Component<SymbolListViewProps, {}> {
+  private onSymbolClicked = (symbol: string, event: any) => {
+    if (event.shiftKey) {
+      this.props.onEditSymbol(symbol);
+    } else {
+      this.props.onSelectSymbol(symbol);
+    }
+  };
+
   render() {
     return (
       <Panel header={<h3>Symbols</h3>}>
@@ -34,8 +45,9 @@ export default class SymbolListView extends React.Component<SymbolListViewProps,
             return (
                 <Symbol
                     symbol={symbol}
-                    selected={this.props.selectedSymbol == symbol}
-                    onClick={this.props.onSymbolSelected}>
+                    active={this.props.activeSymbol == symbol}
+                    editing={this.props.editingSymbol == symbol}
+                    onClick={this.onSymbolClicked}>
                   {symbol}
                 </Symbol>);
           })}

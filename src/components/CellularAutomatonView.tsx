@@ -17,7 +17,8 @@ interface CellularAutomatonViewState {
   playing: boolean
   intervalId: number
   automaton: CellularAutomaton
-  selectedSymbol: string
+  activeSymbol: string
+  editingSymbol: string
 }
 
 export default class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, CellularAutomatonViewState> {
@@ -27,7 +28,8 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
       automaton: null,
       playing: false,
       intervalId: null,
-      selectedSymbol: null
+      activeSymbol: null,
+      editingSymbol: null
     };
   }
 
@@ -47,6 +49,13 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     ]), new StandaloneCellBlock([
       ['+'],
       ['+']
+    ])));
+
+
+    ca.addRule(new Rule('/', new StandaloneCellBlock([
+      [' ', 'm', ' ']
+    ]), new StandaloneCellBlock([
+      ['/', ' ', '+']
     ])));
 
     this.setState(update(this.state, {
@@ -88,20 +97,28 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     // TODO
   };
 
-  private onSymbolSelected = (symbol: string) => {
+  private onSelectSymbol = (symbol: string) => {
     this.setState(update(this.state, {
-      selectedSymbol: { $set: symbol }
+      activeSymbol: { $set: symbol }
     }));
   };
 
+  private onEditSymbol = (symbol: string) => {
+    this.setState(update(this.state, {
+      activeSymbol: { $set: symbol },
+      editingSymbol: { $set: symbol }
+    }));
+  };
+
+
   private onCellClicked = (x: number, y: number) => {
     this.setState(update(this.state, {
-      automaton: { $set: this.state.automaton.setCell(x, y, this.state.selectedSymbol) }
+      automaton: { $set: this.state.automaton.setCell(x, y, this.state.activeSymbol) }
     }));
   };
 
   private onRuleCellClicked = (x: number, y: number, cells: CellBlock): void => {
-    cells.setCell(x, y, this.state.selectedSymbol);
+    cells.setCell(x, y, this.state.activeSymbol);
     this.forceUpdate();
   };
 
@@ -140,13 +157,15 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
               { this.state.automaton ?
                 <SymbolListView
                     symbols={ Object.keys(this.state.automaton.getRules()) }
-                    onSymbolSelected={this.onSymbolSelected}
-                    selectedSymbol={this.state.selectedSymbol} />
+                    onSelectSymbol={this.onSelectSymbol}
+                    onEditSymbol={this.onEditSymbol}
+                    activeSymbol={this.state.activeSymbol}
+                    editingSymbol={this.state.editingSymbol} />
               : '' }
 
-              { this.state.selectedSymbol ?
-                <Panel header={<h4>Rules for { this.state.selectedSymbol }</h4>}>
-                  { this.state.automaton.getRules()[this.state.selectedSymbol].map((rule: Rule, index: number) =>
+              { this.state.editingSymbol ?
+                <Panel header={<h4>Rules for { this.state.editingSymbol }</h4>}>
+                  { this.state.automaton.getRules()[this.state.editingSymbol].map((rule: Rule, index: number) =>
                     <RuleView
                         rule={rule}
                         onCellClicked={this.onRuleCellClicked}
