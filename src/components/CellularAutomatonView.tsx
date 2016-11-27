@@ -122,6 +122,13 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     this.forceUpdate();
   };
 
+  private onRuleUpdated = (symbol: string, ruleIndex: number) => {
+    return (newRule: Rule) => {
+      this.state.automaton.getRulesForSymbol(symbol)[ruleIndex] = newRule;
+      this.forceUpdate();
+    };
+  };
+
   render() {
     return (
       <div>
@@ -170,6 +177,7 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
                     <RuleView
                         rule={rule}
                         onCellClicked={this.onRuleCellClicked}
+                        onRuleUpdated={this.onRuleUpdated(this.state.editingSymbol, index)}
                     />
                   )}
                 </Panel>

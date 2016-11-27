@@ -6,21 +6,12 @@ import CellView from "../components/CellView.tsx"
 
 interface CellBlockViewProps {
   cells: CellBlock
-  onCellsUpdated?: CellBlock
   onCellClicked?: (x: number, y: number) => void
   resizable?: boolean
+  onResize?: (width: number, height: number, horizontalAnchor: HorizontalAnchor, verticalAnchor: VerticalAnchor) => void
 }
 
-
 export default class CellBlockView extends React.Component<CellBlockViewProps, {}> {
-  private onResize = (width: number, height: number, horizontalAnchor: HorizontalAnchor, verticalAnchor: VerticalAnchor): () => void => {
-    return () => {
-      // TODO: figure out anchor stuff
-      this.props.cells.resize(width, height, horizontalAnchor, verticalAnchor);
-    };
-  };
-
-
   private onCellClicked = (x: number, y: number): () => void => {
     return () => {
       this.props.onCellClicked(x, y);
@@ -44,6 +35,15 @@ export default class CellBlockView extends React.Component<CellBlockViewProps, {
 
     return (
         <div>
+          <button
+              onClick={() => this.props.onResize(
+                  this.props.cells.getWidth() + 1,
+                  this.props.cells.getHeight() + 1,
+                  HorizontalAnchor.Left,
+                  VerticalAnchor.Top)}>
+            Resize
+          </button>
+
           <div className="cell-block-view">
             { elements.map((element: any) => element) }
           </div>

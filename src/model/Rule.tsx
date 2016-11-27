@@ -36,7 +36,7 @@ export default class Rule {
   public getTarget(): string {
     return this.target;
   }
-
+  
   public getBeforePattern(): CellBlock {
     return this.beforePattern;
   }
