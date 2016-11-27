@@ -3,21 +3,19 @@ import update = require('react-addons-update');
 import { Panel } from "react-bootstrap";
 import Rule from '../model/Rule'
 import CellBlockView from '../components/CellBlockView';
+import { CellBlock } from '../model/CellBlock';
+
 
 interface RuleViewProps {
   rule: Rule
-  onRuleChanged: (rule: Rule) => void
+  onCellClicked: (x: number, y: number, cells: CellBlock) => void
 }
 
 export default class RuleView extends React.Component<RuleViewProps, {}> {
-  private onBeforeCellChanged = (x: number, y: number, newSymbol: string): void => {
-    this.props.rule.getBeforePattern().setCell(x, y, newSymbol);
-    this.props.onRuleChanged(this.props.rule);
-  };
-
-  private onAfterCellChanged = (x: number, y: number, newSymbol: string): void => {
-    this.props.rule.getAfterPattern().setCell(x, y, newSymbol);
-    this.props.onRuleChanged(this.props.rule);
+  private onCellClicked = (cells: CellBlock): (x: number, y: number) => void => {
+    return (x: number, y: number) => {
+      this.props.onCellClicked(x, y, cells);
+    };
   };
 
   render() {
@@ -27,14 +25,14 @@ export default class RuleView extends React.Component<RuleViewProps, {}> {
           When pattern is...
           <CellBlockView
               cells={this.props.rule.getBeforePattern()}
-              onCellChanged={this.onBeforeCellChanged} />
+              onCellClicked={this.onCellClicked(this.props.rule.getBeforePattern())} />
         </Panel>
 
         <Panel>
           Transform into...
           <CellBlockView
               cells={this.props.rule.getAfterPattern()}
-              onCellChanged={this.onAfterCellChanged} />
+              onCellClicked={this.onCellClicked(this.props.rule.getAfterPattern())} />
         </Panel>
       </Panel>
     );

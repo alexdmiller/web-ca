@@ -1,18 +1,18 @@
 import * as React from "react";
 import update = require('react-addons-update');
 import {CellBlock} from "../model/CellBlock";
-import {Coordinate} from "../model/Coordinate";
 import CellView from "../components/CellView.tsx"
+
 
 interface CellBlockViewProps {
   cells: CellBlock
-  onCellChanged: (x: number, y: number, symbol: string) => void
+  onCellClicked?: (x: number, y: number) => void
 }
 
 export default class CellBlockView extends React.Component<CellBlockViewProps, {}> {
-  private onCellChanged = (x: number, y: number) => {
-    return (newSymbol: string) => {
-      this.props.onCellChanged(x, y, newSymbol);
+  private onCellClicked = (x: number, y: number): () => void => {
+    return () => {
+      this.props.onCellClicked(x, y);
     };
   };
 
@@ -24,7 +24,7 @@ export default class CellBlockView extends React.Component<CellBlockViewProps, {
         for (var x = 0; x < this.props.cells.getWidth(); x++) {
           rowCells.push(<CellView
               symbol={this.props.cells.getCell(x, y)}
-              onCellChanged={this.onCellChanged(x, y)}
+              onCellClicked={this.onCellClicked(x, y)}
           />);
         }
         elements.push(<span className="ca-row">{ rowCells }</span>);

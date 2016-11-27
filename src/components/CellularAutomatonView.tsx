@@ -8,8 +8,7 @@ import SymbolListView from './SymbolListView';
 import CellularAutomaton from "../model/CellularAutomaton";
 import Rule from '../model/Rule';
 import StandaloneCellBlock from '../model/StandaloneCellBlock';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import {CellBlock} from "../model/CellBlock";
 
 interface CellularAutomatonViewProps {
 }
@@ -21,7 +20,7 @@ interface CellularAutomatonViewState {
   selectedSymbol: string
 }
 
-class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, CellularAutomatonViewState> {
+export default class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, CellularAutomatonViewState> {
   constructor(props : CellularAutomatonViewProps) {
     super(props);
     this.state = {
@@ -95,19 +94,15 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
     }));
   };
 
-  private onCellChanged = (x: number, y: number, newSymbol: string) => {
+  private onCellClicked = (x: number, y: number) => {
     this.setState(update(this.state, {
-      automaton: { $set: this.state.automaton.setCell(x, y, newSymbol) }
+      automaton: { $set: this.state.automaton.setCell(x, y, this.state.selectedSymbol) }
     }));
   };
 
-  private onRuleChanged = (symbol: string, ruleIndex: number): (newRule: Rule) => void => {
-    return (newRule: Rule): void => {
-      this.state.automaton.getRulesForSymbol(symbol)[ruleIndex] = newRule;
-      this.setState(update(this.state, {
-        automaton: {$set: this.state.automaton}
-      }));
-    };
+  private onRuleCellClicked = (x: number, y: number, cells: CellBlock): void => {
+    cells.setCell(x, y, this.state.selectedSymbol);
+    this.forceUpdate();
   };
 
   render() {
@@ -138,7 +133,7 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
                         <Button onClick={this.resetAutomaton}>Reset</Button>
                       </ButtonGroup>
                   </ButtonToolbar>}>
-                  <CellBlockView cells={this.state.automaton} onCellChanged={this.onCellChanged} />
+                  <CellBlockView cells={this.state.automaton} onCellClicked={this.onCellClicked} />
               </Panel>
             </Col>
             <Col md={6}>
@@ -154,7 +149,7 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
                   { this.state.automaton.getRules()[this.state.selectedSymbol].map((rule: Rule, index: number) =>
                     <RuleView
                         rule={rule}
-                        onRuleChanged={this.onRuleChanged(this.state.selectedSymbol, index)}
+                        onCellClicked={this.onRuleCellClicked}
                     />
                   )}
                 </Panel>
@@ -166,5 +161,3 @@ class CellularAutomatonView extends React.Component<CellularAutomatonViewProps, 
     );
   }
 }
-
-export default DragDropContext(HTML5Backend)(CellularAutomatonView) as React.ComponentClass<CellularAutomatonViewProps>;
