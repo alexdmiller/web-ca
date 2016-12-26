@@ -9,7 +9,7 @@ export default class CellularAutomaton implements CellBlock {
 
   // TODO: add parameter for topology
   constructor(width: number, height: number) {
-    this.rules = {};
+    this.rules = {' ': [], '*': []};
     this.cells = StandaloneCellBlock.withSize(width, height);
   }
 
@@ -48,6 +48,12 @@ export default class CellularAutomaton implements CellBlock {
       this.rules[rule.getTarget()] = [];
     }
     this.rules[rule.getTarget()].push(rule);
+  }
+
+  public addSymbol(symbol: string): void {
+    if (!this.rules[symbol]) {
+      this.rules[symbol] = [];
+    }
   }
 
   public getRules(): { [key:string]: Rule[] } {

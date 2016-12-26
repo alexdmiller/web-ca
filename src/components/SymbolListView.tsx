@@ -1,6 +1,6 @@
 import * as React from "react";
 import update = require('react-addons-update');
-import { Panel, Button, ButtonProps } from "react-bootstrap";
+import { FormControl, Panel, Button, ButtonProps } from "react-bootstrap";
 
 interface SymbolProps {
   active: boolean
@@ -26,15 +26,40 @@ interface SymbolListViewProps {
   editingSymbol: string
   onSelectSymbol: (symbol: string) => void
   onEditSymbol: (symbol: string) => void
+  onNewSymbol: (symbol: string) => void
 }
 
-export default class SymbolListView extends React.Component<SymbolListViewProps, {}> {
+interface SymbolListViewState {
+  newSymbol: string
+}
+
+export default class SymbolListView extends React.Component<SymbolListViewProps, SymbolListViewState> {
+  constructor(props: SymbolListViewProps) {
+    super(props);
+    this.state = {
+      newSymbol: ''
+    };
+  }
+
   private onSymbolClicked = (symbol: string, event: any) => {
     if (event.shiftKey) {
       this.props.onEditSymbol(symbol);
     } else {
       this.props.onSelectSymbol(symbol);
     }
+  };
+
+  private onNewSymbolUpdate = (event: any) => {
+    this.setState(update(this.state, {
+      newSymbol: { $set: event.target.value }
+    }));
+  };
+
+  private onNewSymbol = () => {
+    this.props.onNewSymbol(this.state.newSymbol);
+    this.setState(update(this.state, {
+      newSymbol: { $set: '' }
+    }));
   };
 
   render() {
@@ -51,6 +76,18 @@ export default class SymbolListView extends React.Component<SymbolListViewProps,
                   {symbol}
                 </Symbol>);
           })}
+        </div>
+
+        <div>
+          <FormControl
+              type="text"
+              value={this.state.newSymbol}
+              onChange={this.onNewSymbolUpdate}
+          />
+
+          <Button onClick={this.onNewSymbol}>
+            New
+          </Button>
         </div>
       </Panel>
     );

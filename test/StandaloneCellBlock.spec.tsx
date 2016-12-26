@@ -40,12 +40,39 @@ describe("StandaloneCellBlock", () => {
     ]);
 
     var largerBlock = block.resize(5, 4, HorizontalAnchor.Right, VerticalAnchor.Bottom);
-    console.log(largerBlock.toString());
     checkMapping(largerBlock, [
       [' ', ' ', ' ', ' ', ' '],
       [' ', ' ', 'a', 'b', 'c'],
       [' ', ' ', 'e', 'f', 'g'],
       [' ', ' ', 'h', 'i', 'j']
+    ]);
+  });
+
+  it("should contract correctly with anchor at top-left", () => {
+    var block = new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['e', 'f', 'g'],
+      ['h', 'i', 'j']
+    ]);
+
+    var smallerBlock = block.resize(2, 2, HorizontalAnchor.Left, VerticalAnchor.Top);
+    checkMapping(smallerBlock, [
+      ['a', 'b'],
+      ['e', 'f']
+    ]);
+  });
+
+  it("should contract correctly with anchor at bottom-right", () => {
+    var block = new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['e', 'f', 'g'],
+      ['h', 'i', 'j']
+    ]);
+
+    var smallerBlock = block.resize(2, 2, HorizontalAnchor.Right, VerticalAnchor.Bottom);
+    checkMapping(smallerBlock, [
+      ['f', 'g'],
+      ['i', 'j']
     ]);
   });
 });

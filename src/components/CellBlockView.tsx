@@ -2,6 +2,7 @@ import * as React from "react";
 import update = require('react-addons-update');
 import {CellBlock, HorizontalAnchor, VerticalAnchor} from "../model/CellBlock";
 import CellView from "../components/CellView.tsx"
+import { Glyphicon } from "react-bootstrap";
 
 
 interface CellBlockViewProps {
@@ -34,20 +35,81 @@ export default class CellBlockView extends React.Component<CellBlockViewProps, {
     }
 
     return (
-        <div>
-          <button
-              onClick={() => this.props.onResize(
-                  this.props.cells.getWidth() + 1,
-                  this.props.cells.getHeight() + 1,
-                  HorizontalAnchor.Left,
-                  VerticalAnchor.Top)}>
-            Resize
-          </button>
-
-          <div className="cell-block-view">
-            { elements.map((element: any) => element) }
-          </div>
-        </div>
+        <table>
+          <tr>
+            <td colSpan={3} style={{textAlign: 'center'}}>
+              <Glyphicon
+                  glyph="arrow-up"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth(),
+                      this.props.cells.getHeight() + 1,
+                      HorizontalAnchor.Left,
+                      VerticalAnchor.Bottom)} />
+              <Glyphicon
+                  glyph="arrow-down"
+                  onClick={() => this.props.onResize(
+                        this.props.cells.getWidth(),
+                        this.props.cells.getHeight() - 1,
+                        HorizontalAnchor.Left,
+                        VerticalAnchor.Bottom)} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Glyphicon
+                  glyph="arrow-right"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth() - 1,
+                      this.props.cells.getHeight(),
+                      HorizontalAnchor.Right,
+                      VerticalAnchor.Bottom)} /> <br />
+              <Glyphicon
+                  glyph="arrow-left"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth() + 1,
+                      this.props.cells.getHeight(),
+                      HorizontalAnchor.Right,
+                      VerticalAnchor.Bottom)} />
+            </td>
+            <td className="cell-block-view">
+              { elements.map((element: any) => element) }
+            </td>
+            <td>
+              <Glyphicon
+                  glyph="arrow-right"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth() + 1,
+                      this.props.cells.getHeight(),
+                      HorizontalAnchor.Left,
+                      VerticalAnchor.Bottom)} /> <br />
+              <Glyphicon
+                  glyph="arrow-left"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth() - 1,
+                      this.props.cells.getHeight(),
+                      HorizontalAnchor.Left,
+                      VerticalAnchor.Bottom)} />
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={3} style={{textAlign: 'center'}}>
+              <Glyphicon
+                  glyph="arrow-up"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth(),
+                      this.props.cells.getHeight() - 1,
+                      HorizontalAnchor.Left,
+                      VerticalAnchor.Top)} />
+              <Glyphicon
+                  glyph="arrow-down"
+                  onClick={() => this.props.onResize(
+                      this.props.cells.getWidth(),
+                      this.props.cells.getHeight() + 1,
+                      HorizontalAnchor.Left,
+                      VerticalAnchor.Top)} />
+            </td>
+          </tr>
+        </table>
     );
   }
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Glyphicon, Navbar, Grid, Row, Col, Button, ButtonGroup, ButtonToolbar, Panel } from "react-bootstrap";
+import { FormControl, Glyphicon, Navbar, Grid, Row, Col, Button, ButtonGroup, ButtonToolbar, Panel } from "react-bootstrap";
 import update = require('react-addons-update');
 
 import RuleView from './RuleView';
@@ -29,7 +29,7 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
       playing: false,
       intervalId: null,
       activeSymbol: null,
-      editingSymbol: null
+      editingSymbol: null,
     };
   }
 
@@ -86,7 +86,6 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
       playing: { $set: false },
       intervalId: { $set: null }
     }));
-
   };
 
   private resetAutomaton = () => {
@@ -129,6 +128,11 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     };
   };
 
+  private onNewSymbol = (symbol: string) => {
+    this.state.automaton.addSymbol(symbol);
+    this.forceUpdate();
+  };
+
   render() {
     return (
       <div>
@@ -163,12 +167,13 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
             </Col>
             <Col md={6}>
               { this.state.automaton ?
-                <SymbolListView
-                    symbols={ Object.keys(this.state.automaton.getRules()) }
-                    onSelectSymbol={this.onSelectSymbol}
-                    onEditSymbol={this.onEditSymbol}
-                    activeSymbol={this.state.activeSymbol}
-                    editingSymbol={this.state.editingSymbol} />
+                  <SymbolListView
+                      symbols={ Object.keys(this.state.automaton.getRules()) }
+                      onSelectSymbol={this.onSelectSymbol}
+                      onNewSymbol={this.onNewSymbol}
+                      onEditSymbol={this.onEditSymbol}
+                      activeSymbol={this.state.activeSymbol}
+                      editingSymbol={this.state.editingSymbol} />
               : '' }
 
               { this.state.editingSymbol ?

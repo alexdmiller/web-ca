@@ -1,4 +1,5 @@
 import {CellBlock, HorizontalAnchor, VerticalAnchor} from './CellBlock'
+import BackedCellBlock from "./BackedCellBlock";
 
 export default class StandaloneCellBlock extends CellBlock {
   static withSize(width: number, height: number) {
@@ -51,9 +52,18 @@ export default class StandaloneCellBlock extends CellBlock {
       horizontalAnchor: HorizontalAnchor,
       verticalAnchor: VerticalAnchor): CellBlock {
     var c = StandaloneCellBlock.withSize(newWidth, newHeight);
-    var ax = horizontalAnchor == HorizontalAnchor.Left ? 0 : newWidth - this.getWidth();
-    var ay = verticalAnchor == VerticalAnchor.Top ? 0 : newHeight - this.getHeight();
-    c.copyCells(this, ax, ay, false);
+    var toX = horizontalAnchor == HorizontalAnchor.Left ? 0 : Math.max(newWidth - this.getWidth(), 0);
+    var toY = verticalAnchor == VerticalAnchor.Top ? 0 : Math.max(newHeight - this.getHeight(), 0);
+
+    var fromX = horizontalAnchor == HorizontalAnchor.Left ? 0 : Math.max(this.getWidth() - newWidth, 0);
+    var fromY = verticalAnchor == VerticalAnchor.Top ? 0 : Math.max(this.getHeight() - newHeight, 0);
+
+    var fromWidth = Math.min(this.getWidth(), newWidth);
+    var fromHeight = Math.min(this.getHeight(), newHeight);
+
+    var view = BackedCellBlock.donutMapped(this, { x: fromX, y: fromY }, fromWidth, fromHeight);
+
+    c.copyCells(view, toX, toY, false);
     return c;
   }
 
