@@ -1,11 +1,13 @@
 import * as chai from "chai";
 
-import Rule from "../src/model/Rule";
+import Rule from "../src/model/rules/Rule";
 import StandaloneCellBlock from "../src/model/StandaloneCellBlock";
 
 describe("Rule", () => {
+  // TODO: create static function for Rule shortcut
+
   it("should correctly match cell block with no wild cards", () => {
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
         ['a', 'b', 'c'],
         ['d', 'm', 'e'],
         ['f', 'g', 'h']
@@ -21,11 +23,11 @@ describe("Rule", () => {
         ['f', 'g', 'h']
     ]);
 
-    chai.assert.isTrue(rule.matches(block));
+    chai.assert.isTrue(rule.matches(1, 1, block));
   });
 
   it("should correctly reject cell block that does not match (no wild cards)", () => {
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       ['a', 'b', 'c'],
       ['d', 'm', 'e'],
       ['f', 'g', 'h']
@@ -42,11 +44,11 @@ describe("Rule", () => {
       ['f', 'g', 'z']
     ]);
 
-    chai.assert.isFalse(rule.matches(block));
+    chai.assert.isFalse(rule.matches(1, 1, block));
   });
 
   it("should correctly reject cell block with incorrect target", () => {
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       ['a', 'b', 'c'],
       ['d', 'm', 'e'],
       ['f', 'g', 'h']
@@ -63,6 +65,6 @@ describe("Rule", () => {
       ['f', 'g', 'z']
     ]);
 
-    chai.assert.isFalse(rule.matches(block));
+    chai.assert.isFalse(rule.matches(1, 1, block));
   });
 });

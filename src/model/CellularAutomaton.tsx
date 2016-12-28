@@ -1,14 +1,15 @@
-import Rule from './Rule';
+import Rule from './rules/Rule';
 import { CellBlock, HorizontalAnchor, VerticalAnchor } from "./CellBlock";
 import StandaloneCellBlock from "./StandaloneCellBlock";
 import BackedCellBlock from "./BackedCellBlock";
 
-export default class CellularAutomaton implements CellBlock {
+export default class CellularAutomaton extends CellBlock {
   private rules: { [key:string]: Rule[] };
   private cells: StandaloneCellBlock;
 
   // TODO: add parameter for topology
   constructor(width: number, height: number) {
+    super();
     this.rules = {' ': [], '*': []};
     this.cells = StandaloneCellBlock.withSize(width, height);
   }
@@ -72,18 +73,18 @@ export default class CellularAutomaton implements CellBlock {
         var rulesForCell: Rule[] = this.rules[this.getCell(x, y)];
         if (rulesForCell) {
           rulesForCell.forEach((rule: Rule) => {
-            // Find top left of block in cells
-            var topLeft = {
-              x: x - rule.getTargetX(),
-              y: y - rule.getTargetY()
-            };
-
-            var block = BackedCellBlock.donutMapped(this.cells, topLeft, rule.getWidth(), rule.getHeight());
 
             // Check pattern
-            if (rule.matches(block)) {
+            if (rule.matches(x, y, this.cells)) {
+              var transformation = rule.getTransformation();
+
+              var topLeft = {
+                x: x - transformation.getAnchor().x,
+                y: y - transformation.getAnchor().y
+              };
+
               var nextGenBlock = BackedCellBlock.donutMapped(nextGeneration, topLeft, rule.getWidth(), rule.getHeight());
-              nextGenBlock.copyCells(rule.getAfterPattern(), 0, 0, true);
+              nextGenBlock.copyCells(rule.getTransformation(), 0, 0, true);
             }
           });
         }

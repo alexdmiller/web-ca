@@ -1,9 +1,8 @@
 import * as chai from "chai";
 
 import StandaloneCellBlock from "../src/model/StandaloneCellBlock";
-import BackedCellBlock from "../src/model/BackedCellBlock";
 import CellBlock from "../src/model/BackedCellBlock";
-import {HorizontalAnchor, VerticalAnchor} from "../src/model/CellBlock";
+import { HorizontalAnchor, VerticalAnchor } from "../src/model/CellBlock";
 
 describe("StandaloneCellBlock", () => {
   // TODO: factor out this common function (also in BackedCellBlock.spec.tsx)
@@ -14,6 +13,18 @@ describe("StandaloneCellBlock", () => {
       }
     }
   }
+
+  it("should set anchor from target", () => {
+    var block = new StandaloneCellBlock([
+      ['a', 'b', 'c'],
+      ['e', 'f', 'X'],
+      ['h', 'i', 'j']
+    ]);
+
+    block.setAnchorFromTarget('X');
+
+    chai.assert.deepEqual(block.getAnchor(), {x: 2, y: 1});
+  });
 
   it("should expand correctly with anchor at top-left", () => {
     var block = new StandaloneCellBlock([

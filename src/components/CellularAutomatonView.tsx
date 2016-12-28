@@ -6,7 +6,7 @@ import RuleView from './RuleView';
 import CellBlockView from './CellBlockView';
 import SymbolListView from './SymbolListView';
 import CellularAutomaton from "../model/CellularAutomaton";
-import Rule from '../model/Rule';
+import Rule from '../model/rules/Rule';
 import StandaloneCellBlock from '../model/StandaloneCellBlock';
 import {CellBlock} from "../model/CellBlock";
 
@@ -37,13 +37,13 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     var ca: CellularAutomaton = new CellularAutomaton(20, 20);
     ca.setCell(4, 4, '+');
 
-    ca.addRule(new Rule('+', new StandaloneCellBlock([
+    ca.addRule(Rule.withPattern('+', new StandaloneCellBlock([
       ['m', ' ']
     ]), new StandaloneCellBlock([
       [' ', '+']
     ])));
 
-    ca.addRule(new Rule('+', new StandaloneCellBlock([
+    ca.addRule(Rule.withPattern('+', new StandaloneCellBlock([
       ['m'],
       [' ']
     ]), new StandaloneCellBlock([
@@ -52,7 +52,7 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
     ])));
 
 
-    ca.addRule(new Rule('/', new StandaloneCellBlock([
+    ca.addRule(Rule.withPattern('/', new StandaloneCellBlock([
       [' ', 'm', ' ']
     ]), new StandaloneCellBlock([
       ['/', ' ', '+']

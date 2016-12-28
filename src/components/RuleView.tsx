@@ -1,7 +1,7 @@
 import * as React from "react";
 import update = require('react-addons-update');
 import { Panel } from "react-bootstrap";
-import Rule from '../model/Rule'
+import Rule from '../model/rules/Rule'
 import CellBlockView from '../components/CellBlockView';
 import { CellBlock, HorizontalAnchor, VerticalAnchor } from '../model/CellBlock';
 
@@ -19,10 +19,9 @@ export default class RuleView extends React.Component<RuleViewProps, {}> {
       height: number,
       horizontalAnchor: HorizontalAnchor,
       verticalAnchor: VerticalAnchor): void => {
-    var newRule = new Rule(
-        this.props.rule.getTarget(),
-        this.props.rule.getBeforePattern().resize(width, height, horizontalAnchor, verticalAnchor),
-        this.props.rule.getAfterPattern().resize(width, height, horizontalAnchor, verticalAnchor));
+    // TODO: resize each constraint separately
+    // TODO: reposition anchor point
+    var newRule = this.props.rule.resize(width, height, horizontalAnchor, verticalAnchor);
     this.props.onRuleUpdated(newRule);
   };
 
@@ -32,27 +31,31 @@ export default class RuleView extends React.Component<RuleViewProps, {}> {
     };
   };
 
-  render() {
-    return (
-      <Panel>
-        <Panel>
-          When pattern is...
-          <CellBlockView
-              cells={this.props.rule.getBeforePattern()}
-              onCellClicked={this.onCellClicked(this.props.rule.getBeforePattern())}
-              onResize={this.onResize}
-          />
-        </Panel>
+  // render() {
+  //   return (
+  //     <Panel>
+  //       <Panel>
+  //         When pattern is...
+  //         <CellBlockView
+  //             cells={this.props.rule.getBeforePattern()}
+  //             onCellClicked={this.onCellClicked(this.props.rule.getBeforePattern())}
+  //             onResize={this.onResize}
+  //         />
+  //       </Panel>
+  //
+  //       <Panel>
+  //         Transform into...
+  //         <CellBlockView
+  //             cells={this.props.rule.getAfterPattern()}
+  //             onCellClicked={this.onCellClicked(this.props.rule.getAfterPattern())}
+  //             onResize={this.onResize}
+  //         />
+  //       </Panel>
+  //     </Panel>
+  //   );
+  // }
 
-        <Panel>
-          Transform into...
-          <CellBlockView
-              cells={this.props.rule.getAfterPattern()}
-              onCellClicked={this.onCellClicked(this.props.rule.getAfterPattern())}
-              onResize={this.onResize}
-          />
-        </Panel>
-      </Panel>
-    );
+  render() {
+    return <Panel></Panel>;
   }
 }

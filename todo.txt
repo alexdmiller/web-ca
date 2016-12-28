@@ -1,0 +1,8 @@
+When going from rule with one pattern to rule with multiple generic constraints,
+ran into a problem: how to sync up sizes and anchor points of all constraints +
+transformation pattern?
+
+Problems:
+    - how to initially create
+
+    Solution 1: Store anchor position in each of the

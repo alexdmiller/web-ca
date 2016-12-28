@@ -2,7 +2,7 @@ import * as chai from "chai";
 
 import CellularAutomaton from "../src/model/CellularAutomaton";
 import StandaloneCellBlock from "../src/model/StandaloneCellBlock";
-import Rule from "../src/model/Rule";
+import Rule from "../src/model/rules/Rule";
 
 describe("CellularAutomaton", () => {
   var ca: CellularAutomaton;
@@ -28,7 +28,7 @@ describe("CellularAutomaton", () => {
         [' ', ' ', ' ']
     ]);
 
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       [' ', ' ', ' '],
       [' ', 'm', ' '],
       [' ', ' ', ' ']
@@ -54,7 +54,7 @@ describe("CellularAutomaton", () => {
       [' ', ' ', ' ']
     ]);
 
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       [' ', ' ', ' '],
       [' ', 'm', ' '],
       [' ', ' ', ' ']
@@ -80,7 +80,7 @@ describe("CellularAutomaton", () => {
       [' ', ' ', ' ']
     ]);
 
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       [' ', ' ', ' '],
       [' ', 'm', ' '],
       [' ', ' ', ' ']
@@ -106,7 +106,7 @@ describe("CellularAutomaton", () => {
       ['-', '-', '-', '-']
     ]);
 
-    var rule = new Rule('+', new StandaloneCellBlock([
+    var rule = Rule.withPattern('+', new StandaloneCellBlock([
       ['m', ' '],
     ]), new StandaloneCellBlock([
       [' ', '+'],
