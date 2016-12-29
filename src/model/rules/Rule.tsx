@@ -64,6 +64,14 @@ export default class Rule {
     this.constraints.push(constraint);
   }
 
+  public getConstraints(): Constraint[] {
+    return this.constraints;
+  }
+
+  public setConstraint(index: number, constraint: Constraint): void {
+    this.constraints[index] = constraint;
+  }
+
   public matches(x: number, y: number, cells: CellBlock): boolean {
     for (let constraint of this.constraints) {
       if (!constraint.matches(x, y, cells)) {

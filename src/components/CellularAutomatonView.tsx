@@ -180,6 +180,7 @@ export default class CellularAutomatonView extends React.Component<CellularAutom
                 <Panel header={<h4>Rules for { this.state.editingSymbol }</h4>}>
                   { this.state.automaton.getRules()[this.state.editingSymbol].map((rule: Rule, index: number) =>
                     <RuleView
+                        activeSymbol={this.state.activeSymbol}
                         rule={rule}
                         onCellClicked={this.onRuleCellClicked}
                         onRuleUpdated={this.onRuleUpdated(this.state.editingSymbol, index)}

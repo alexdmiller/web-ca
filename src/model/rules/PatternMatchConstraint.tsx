@@ -57,4 +57,8 @@ export default class PatternMatchConstraint extends Constraint {
     this.pattern = this.pattern.resize(newWidth, newHeight, horizontalAnchor, verticalAnchor);
     return this;
   }
+
+  public getPattern(): CellBlock {
+    return this.pattern;
+  }
 }
